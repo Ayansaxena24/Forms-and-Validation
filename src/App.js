@@ -75,6 +75,10 @@ function App() {
 
       </form>
     </div>
+
+    // "homepage": "https://Ayansaxena24.github.io/Tic-Tac-Toe",
+    // "predeploy": "npm run build",
+    // "deploy": "gh-pages -d build",
   )
 }
 export default App
