@@ -1,84 +1,103 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
-import { useForm } from "react-hook-form"; 
+import React, { useEffect, useState } from 'react';
 import "./App.css";
 
 function App() {
+  const initialValues = { username: "", email: "", password: ""};
+  const [ formValues, setFormValues] = useState(initialValues);
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
 
-  const { register, handleSubmit, errors} = useForm();
-  const [userInfo, setUserInfo] = useState();
-  const onSubmit = (data) => {
-    setUserInfo(data);
-    console.log(data);
+  const handleChange = (e) => {
+    const {name , value} = e.target;
+    setFormValues({...formValues, [name]:value });
   };
-  console.log(errors);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmit(true);
+  };
+
+  useEffect(() => {
+    console.log(formErrors);
+    if(Object.keys(formErrors).length === 0 && isSubmit) {
+      console.log(formValues);
+    }
+}, [formErrors]);
+  const validate = (values) => {
+    const errors = {};
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    if (!values.username) {
+      errors.username = "Username field is empty!";
+    }
+    if (!values.email) {
+      errors.email = "Email field is empty";
+    } else if (!regex.test(values.email)) {
+      errors.email = "This is not a valid email format";
+    }
+    if (!values.password) {
+      errors.password = "Password field is empty";
+    } else if (values.password.length < 4) {
+      errors.password = "Password must contain more than 4 characters";
+    } else if (values.password.length > 10) {
+      errors.password = "Password must contain less than 4 characters";
+    }
+    return errors;
+  };
+
   return (
     <div className = "container">
-      <pre>{JSON.stringify(userInfo, undefined, 2)}</pre>
-      <form onSubmit={() => handleSubmit(onSubmit)}> 
+      {Object.keys(formErrors).length === 0 && isSubmit ? (
+        <div className="ui message success">Signed in successfully</div>
+      ) : ( 
+        ""
+      )}
+      
+      <form onSubmit={handleSubmit}> 
         <h1>Registration Form</h1>
         <div className="ui divider"></div>
         <div className="ui form">
           <div className="field">
             <label>Username</label>
             <input 
-            className='input-field'
-            type="text" 
+            className='input-field' type="text" 
             name="username" 
             placeholder="Username" 
-            {...register("message",{ required: "Username is required", })}
+            value={formValues.username}
+            onChange={handleChange}
             />
           </div>
-          <p>{errors?.email?.message}</p>
+          <p>{formErrors.username}</p>
           <div className="field">
             <label>Email</label>
             <input 
-            className='input-field'
-            type="email" 
+            className='input-field' type="text" 
             name="email" 
             placeholder="Email" 
-            {...register("message",
-            { required: "Email is required",
-              pattern: 
-              {
-                value: /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/, 
-                message:"This is not a valid email"
-              },
-            }
-            )}/>
-           <p>{errors?.email?.message}</p>
+            value={formValues.email}
+            onChange={handleChange}
+            />
           </div>
+          <p>{formErrors.email}</p>
           <div className="field">
             <label>Password</label>
             <input 
-            className='input-field'
-            type="password" 
-            name="Password" 
+            className='input-field' type="password" 
+            name="password" 
             placeholder="Password" 
-            {...register("message",
-            { required: "Password is required",
-              minLength:
-              {
-                value:4,
-                message:"Password must contain more than 4 characters"},
-              maxLength:
-              {
-                value:10,
-                message:"Password cannot contain more than 10 words"
-              },
-            }
-            )}/>
-           <p>{errors?.email?.message}</p>
+            value = {formValues.password}
+            onChange={handleChange}
+            />
           </div>
+          <p>{formErrors.password}</p>
           <button className='sbmt-btn'>Submit</button>
         </div>
-
       </form>
     </div>
 
     // "homepage": "https://Ayansaxena24.github.io/Tic-Tac-Toe",
     // "predeploy": "npm run build",
     // "deploy": "gh-pages -d build",
-  )
+  );
 }
 export default App
