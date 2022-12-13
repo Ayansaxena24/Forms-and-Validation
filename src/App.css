@@ -2,9 +2,39 @@ body {
   color: white;
   background-color: #02101a;
   background-image: url("https://www.transparenttextures.com/patterns/light-sketch.png");
+  display:flex;
+  justify-content:center;
 }
 
 .field {
   padding: 10px;
+  display: flex;
 }
+
+.input-field {
+  align-items: center;
+  width: 80%;
+}
+
+label{
+  width:9vw;
+}
+
+.sbmt-btn {
+  margin-left: 50px;
+}
+
+.container {
+  width:30vw;
+  text-align:center;
+  display:flex;
+  justify-content:center;
+  border: 2px solid white;
+  margin: 10rem 0;
+  padding: 50px 10px;
+
+}
+
+
+
 

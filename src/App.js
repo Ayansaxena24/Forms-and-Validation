@@ -22,6 +22,7 @@ function App() {
           <div className="field">
             <label>Username</label>
             <input 
+            className='input-field'
             type="text" 
             name="username" 
             placeholder="Username" 
@@ -32,6 +33,7 @@ function App() {
           <div className="field">
             <label>Email</label>
             <input 
+            className='input-field'
             type="email" 
             name="email" 
             placeholder="Email" 
@@ -49,6 +51,7 @@ function App() {
           <div className="field">
             <label>Password</label>
             <input 
+            className='input-field'
             type="password" 
             name="Password" 
             placeholder="Password" 
